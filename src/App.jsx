@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom"
 //CSS
 import './styles/fonts.css';
 import './styles/main.css'
+
 //relative HTML
 import Navbar from "./static_content/Navbar"
 import Game from "./pages/Game"

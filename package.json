@@ -1,9 +1,11 @@
 {
   "name": "react-javascript",
   "version": "1.0.0",
+  "main": "sas_db.js",
   "type": "module",
   "description": "React TypeScript on Replit, using Vite bundler",
   "scripts": {
+    "start": "node sas_db.js",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
