@@ -6,7 +6,15 @@ import io from 'socket.io-client';
 
 //socket connection to server
 const socket = io.connect("https://SandS-replit-rebuild.luke-schnetlage.repl.co");
-
+/*
+socket.on("user_connection", (username) => {
+  if(!username){
+    console.log('please delete your browser cache and login')
+  } else {
+    console.log(`${username}`)
+  }
+})
+*/
 export default function Game() {
   const [gameState, setGameState] = useState("pre")
   if (gameState === "pre") {

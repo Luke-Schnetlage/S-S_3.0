@@ -24,18 +24,36 @@ io.on("connection", (socket) => {
   username = socket.handshake.headers["x-replit-user-name"]
   userID = socket.handshake.headers["x-replit-user-id"]
   console.log(`${username} | ${userID}`);
+  //on connection, return the username to establish authentication worked
+  socket.emit("user_connection",username);
 
-  socket.on("send_message", (data) => {
-    console.log(socket.id);
-    console.log(data.message);
-
-    //broadcast will emit to all other clients except the one that sent the data
-    socket.broadcast.emit("receive_message", data)
+  
+  const users = [];
+  var clients = io.sockets.sockets;
+  var count = 0;
+  clients.forEach(function(data){
+    count++;
+    console.log(`User ${count}: ${data.id}`)
+  });
+/*
+  socket.on("join", function(room, username){
+    if (username != ""){
+      rooms[socket.id] = room;
+      usernames[socket.id] = username;
+      socket.leaveAll();
+      socket.join(room);
+      io.in(room).emit("recieve", "Server : " + username + " has entered the chat.");
+      socket.emit("join", room);
+    }
   })
-})
+*/
+  
+});
+//event listenesr for a client to make a disconnect from the server
 
-server.listen(3001, () => {
+
+server.listen(3002, () => {
   console.log("SERVER IS RUNNING");
-})
+});
 
 
