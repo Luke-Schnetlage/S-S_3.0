@@ -1,6 +1,6 @@
 const { createClient } = require('@supabase/supabase-js') // Allows user to access Supabase DB
 const { createHash } = require('crypto') // Allows to use crypto function for password
-const supabase = createClient('https://fzlomsndqkamyrqjjzyb.supabase.co', `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6bG9tc25kcWthbXlycWpqenliIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk4Njg3MzIsImV4cCI6MTk5NTQ0NDczMn0.mjcd0jLLcFFvrQpO0tver9lgh_82CEFFBEaxGq1WaKs`) // URL, API Key
+const supabase = createClient('https://fzlomsndqkamyrqjjzyb.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6bG9tc25kcWthbXlycWpqenliIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk4Njg3MzIsImV4cCI6MTk5NTQ0NDczMn0.mjcd0jLLcFFvrQpO0tver9lgh_82CEFFBEaxGq1WaKs') // URL, API Key
 
 /* Create table (IF NEEDED)
 
@@ -27,17 +27,17 @@ createTable()
 /* Insert player info */
 const insert = async () => {
   const hash = createHash('sha256').update('Carl_Winslow?').digest('hex')
-  let {data = 'player', error} = await supabase.from('player').insert({
+  const { data = 'player', error } = await supabase.from('player').insert({
     username: 'Reginald_VelJohnson',
     password: hash
-  });
-  if(error) {
-    console.log(error);
-    return;
+  })
+  if (error) {
+    console.log(error)
+    return
   }
-  console.log('Player inserted');
+  console.log('Player inserted')
 }
-insert();
+insert()
 
 /* Select player info
 
@@ -53,8 +53,7 @@ const main = async () => {
 main()
 */
 
-
-/* Delete table info 
+/* Delete table info
 
 let { data, error } = await supabase.rpc('drop_table', {
     schema: 'public',
@@ -69,7 +68,7 @@ let { data, error } = await supabase.rpc('drop_table', {
   console.log('Table deleted:', data)
 */
 
-/* Alter table info 
+/* Alter table info
 
 let { data, error } = await supabase.rpc('alter_column', {
     schema: 'public',
