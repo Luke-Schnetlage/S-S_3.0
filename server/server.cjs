@@ -14,7 +14,12 @@ const io = new Server(server, {
         methods: ["GET", "POST"],
     }
 });
-const adapter = io.of("/").adapter;//new
+const adapter = io.of("/").adapter;
+const { createClient } = require('@supabase/supabase-js')
+const SUPABASE_URL = 'https://fzlomsndqkamyrqjjzyb.supabase.co'
+const SUPABASE_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6bG9tc25kcWthbXlycWpqenliIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk4Njg3MzIsImV4cCI6MTk5NTQ0NDczMn0.mjcd0jLLcFFvrQpO0tver9lgh_82CEFFBEaxGq1WaKs`
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+//const createPlayer = require((path.join(__dirname, 'pregame_actions/pregame.cjs')));
 //res.sendFile(path.join(__dirname, '/build/index.html'))
 app.use(express.static(path.join(__dirname, '/dist')))
 
@@ -26,7 +31,9 @@ io.on("connection", (socket) => {
     console.log(`${socket.username} | ${socket.userID}`);
     //on connection, return the username to establish authentication worked
     socket.emit("user_connection", socket.username);
-
+    if(socket.username){
+      createPlayer(socket.username,socket.userID)
+    }
     socket.join("general");
     io.to("general").emit("connected-socket-users", getusers(io, socket));
     /*  
@@ -38,11 +45,17 @@ io.on("connection", (socket) => {
           console.log(`User ${count}: ${data.id}`)
           users.push(data)
       });
-  */
+    */
     socket.on("list_available_users", function (data, counter) {
         socket.emit("connected-socket-users", getusers(io, socket));
     });
 
+    socket.on("list_available_users", function (data, counter) {
+        
+    });
+
+
+  
     socket.on("disconect", () => {
         socket.emit("connected-socket-users", getusers(io, socket));
     });    
@@ -63,7 +76,7 @@ server.listen(3001, () => {
     console.log("SERVER IS RUNNING");
 });
 
-
+//commuication with the front end
 function getusers(io, socket) {
     const users = [];
     var clients = io.sockets;
@@ -75,4 +88,17 @@ function getusers(io, socket) {
         //socket.emit("connected-socket-users", users);
     })
     return users
+}
+
+//commuication with the back end
+const createPlayer = async (username, id) => {
+  const { data = 'player', error } = await supabase.from('player')
+    .insert({
+      userid : id,
+      username: username
+    })
+  if (error) {
+    console.log(error)
+  }
+  // console.log('Player inserted');
 }
