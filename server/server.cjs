@@ -26,67 +26,53 @@ io.on("connection", (socket) => {
     console.log(`${socket.username} | ${socket.userID}`);
     //on connection, return the username to establish authentication worked
     socket.emit("user_connection", socket.username);
-    //console.log("test statment #1");
 
+    socket.join("general");
+    io.to("general").emit("connected-socket-users", getusers(io, socket));
+    /*  
     const users = [];
-    var clients = io.sockets.sockets;
-    var count = 0;
-    clients.forEach(function (data) {
-        count++;
-        console.log(`User ${count}: ${data.id}`)
-        users.push(data)
+      var clients = io.sockets.sockets;
+      var count = 0;
+      clients.forEach(function (data) {
+          count++;
+          console.log(`User ${count}: ${data.id}`)
+          users.push(data)
+      });
+  */
+    socket.on("list_available_users", function (data, counter) {
+        socket.emit("connected-socket-users", getusers(io, socket));
     });
 
-    //emitter.socketsJoin("default");
+    socket.on("disconect", () => {
+        socket.emit("connected-socket-users", getusers(io, socket));
+    });    
+
     /*
     io.of("/").adapter.on("create-room", (room) => {
       console.log(`room ${room} was created`);
     });
-  
     io.of("/").adapter.on("join-room", (room, id) => {
       console.log(`socket ${id} has joined room ${room}`);
     });
     */
-    socket.on("list_available_users", function (data, counter) {
-        const users = [];
-        var clients = io.sockets;
-        clients.sockets.forEach(function (data, counter) {
-            users.push({
-                userSocketID: data.id,
-                username: data.username,
-            });
-            socket.emit("connected-socket-users", users);
-        })
-      
-        socket.on("disconect", () => {
-            const users = [];
-            var clients = io.sockets;
-            clients.sockets.forEach(function (data, counter) {
-                users.push({
-                    userSocketID: data.id,
-                    username: data.username,
-                });
-                socket.emit("connected-socket-users", users);
-            })
 
-        });
-      /*
-        setInterval(function () {
-            socket.emit("connected-socket-users", users);
-        }, 10000);
-      */
-
-    });
 });
-//event listenesr for a client to make a disconnect from the server
-/*
-setInterval(function(socket){
-socket.emit("connected-socket-users", users);
-}, 3000);
-*/
+
 
 server.listen(3001, () => {
     console.log("SERVER IS RUNNING");
 });
 
 
+function getusers(io, socket) {
+    const users = [];
+    var clients = io.sockets;
+    clients.sockets.forEach(function (data, counter) {
+        users.push({
+            userSocketID: data.id,
+            username: data.username,
+        });
+        //socket.emit("connected-socket-users", users);
+    })
+    return users
+}
