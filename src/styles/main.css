@@ -36,7 +36,7 @@ footer > div {
     margin: 1rem;
     text-align: center;
   }
-  
+  /*
   .nav {
     background-color: #333;
     color: white;
@@ -82,6 +82,52 @@ footer > div {
     transition: background-color .35s ease-out;
   }
 
+  .nav li a {
+    display: inline-block;
+  }
+*/
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10vh;
+  padding: 0 20px;
+  background-color: white;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.site-logo {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 2rem;
+  color: black;
+}
+
+.burger {
+  display: block;
+  cursor: pointer;
+}
+
+.menu {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 10vh;
+  left: 0;
+  width: 100vw;
+  height: 90vh;
+  margin: 0;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.menu.show {
+  display: flex;
+}
   .center-align {
     text-align: center;
   }

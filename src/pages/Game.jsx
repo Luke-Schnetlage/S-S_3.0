@@ -19,7 +19,7 @@ socket.on('user_connection', (username) => {
   }
 })
 
-socket.on('connected-socket-users', (clients) => { // receieve list of available user
+socket.on('connected-socket-users', (clients) => { // receive list of available user
   console.log('available_users received!')
   console.log(clients)
 })

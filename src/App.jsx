@@ -1,18 +1,19 @@
 // library for routing functionality (Lets pages load w/o refreshing)
 import { Route, Routes } from 'react-router-dom'
+import React from 'react';
 
 // CSS
 import './styles/fonts.css'
 import './styles/main.css'
 
 // relative HTML
-import Navbar from './static_content/Navbar'
-import Game from './pages/Game'
-import Home from './pages/Home'
-import Rules from './pages/Rules'
-import Footer from './static_content/Footer'
+import Navbar from './static_content/Navbar';
+import Game from './pages/Game';
+import Home from './pages/Home';
+import Rules from './pages/Rules';
+import Footer from './static_content/Footer';
 
-function App () {
+function App() {
   return (
     <div>
       <Navbar />
