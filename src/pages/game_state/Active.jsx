@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import socket from '../socket';
-import { useHistory } from 'react-router-dom';
+import socket from '../../socket/socket.js';
+//import { useHistory } from 'react-router-dom';
 
 export default function Active({ setGameState }) {
   const [connectedUsers, setConnectedUsers] = useState([]);

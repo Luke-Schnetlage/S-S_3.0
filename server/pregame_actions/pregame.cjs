@@ -13,22 +13,22 @@ async function createPlayer(username, id) {
   // console.log('Player inserted');
 }
 
-async function  createGame(startPlayer, joinPlayer){
-  const { data, error } = await supabase
-    .from('game')
-    .insert({
-      start_playerid: startPlayer,
-      join_playerid: joinPlayer,
-      result: 2
+function getusers(io, socket) {
+    const users = [];
+    var clients = io.sockets;
+    clients.sockets.forEach(function (data, counter) {
+        users.push({
+            userSocketID: data.id,
+            username: data.username,
+        });
+        //socket.emit("connected-socket-users", users);
     })
-  if (error) {
-    console.log(error)
-  }
-//  console.log('Game created');
+    return users
 }
-// createGame('5','16');
+
+
 
 module.exports = {
   createPlayer: createPlayer,
-  createGame: createGame
+  getusers: getusers
 }

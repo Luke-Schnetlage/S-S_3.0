@@ -1,47 +1,45 @@
-import React, { useState, useEffect } from'react';
-import { socket } from '../socket';
+// in Pre.jsx
 
-export default function Pre ({ setGameState }) {
-  const [availableUsers, setAvailableUsers] = useState([]);
+import React, { useState, useEffect } from 'react';
+import socket from '../../socket/socket.js';
 
-  useEffect(() => {
-    socket.on('connected-socket-users', (clients) => {
-      setAvailableUsers(clients); //connected-socket-users returns clients as an array of objects containing socketID and username
-    });
+export default function Pre({ setGameState, availableUsers }) {
+  console.log(`pre available users: ${availableUsers}`)
 
-    return () => {
-      socket.removeAllListeners('connected-socket-users');
+  function startGame(opponent) {
+    if (!opponent) {
+      console.log(`unsuccessful pass!`)
     }
-  }, [])
+    console.log(opponent)
+    //socket.emit('start_game' <pass opponent to create a room>)
+    //socket.on('game_created') <-- bad name
+    //change gamestate to active
 
-  function startGame() {
+    /*
     socket.emit('start_game', (error) => {
       if (error) {
         console.log(error);
       }
-      else{
+      else {
         setGameState('active');
       }
     })
+    */
   }
-    
-  
+
   return (
     <div className='center-align'>
-      <h1>Pre-Game</h1>
-      <div>
-        <button onClick={startGame} disabled={availableUsers.length === 0}>Start Game</button>
-      </div>
-      {availableUsers.length > 0 && (
-      <div>
-        <h4>Available users: </h4>
+      <h1>Available Users</h1>
+      <div className='box'>
         <ul>
-          {availableUsers.map((user) => (
-            <li key={user}>{user}</li>
+          {availableUsers.map(user => (
+            <li key={user}>
+              {user}&nbsp;
+              <button onClick={() => startGame(user)}>Challenge Player</button>
+            </li>
           ))}
         </ul>
       </div>
-      )}
     </div>
   )
 }

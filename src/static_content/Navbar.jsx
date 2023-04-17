@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 
 function Navbar() {
-const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
-const handleBurgerClick = () => {
-  setOpen(!open);
-};
-  
+  const handleBurgerClick = () => {
+    setOpen(!open);
+  };
+
   return (
     <nav className='nav'>
       <Link to='/'>

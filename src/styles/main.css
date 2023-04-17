@@ -97,11 +97,19 @@ footer > div {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.site-logo {
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 2rem;
-  color: black;
+.site-title {
+  text-align: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  width: 50px;
+  height: auto;
 }
 
 .burger {

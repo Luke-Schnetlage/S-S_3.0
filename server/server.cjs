@@ -18,14 +18,14 @@ const adapter = io.of("/").adapter;
 const { createClient } = require('@supabase/supabase-js')
 const SUPABASE_URL = 'https://fzlomsndqkamyrqjjzyb.supabase.co'
 const SUPABASE_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6bG9tc25kcWthbXlycWpqenliIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk4Njg3MzIsImV4cCI6MTk5NTQ0NDczMn0.mjcd0jLLcFFvrQpO0tver9lgh_82CEFFBEaxGq1WaKs`
-
+//Luke's custom functions
 const pregame = require((path.join(__dirname, 'pregame_actions/pregame.cjs')));
 //res.sendFile(path.join(__dirname, '/build/index.html'))
 app.use(express.static(path.join(__dirname, '/dist')))
 
 //event listener for a client to make a connection
 io.on("connection", (socket) => {
-    console.log(`User Connected: ${socket.id}`)
+    //console.log(`User Connected: ${socket.id}`)
     socket.username = socket.handshake.headers["x-replit-user-name"]
     socket.userID = socket.handshake.headers["x-replit-user-id"]
     console.log(`${socket.username} | ${socket.userID}`);
@@ -35,7 +35,7 @@ io.on("connection", (socket) => {
       pregame.createPlayer(socket.username,socket.userID)
     }
     socket.join("general");
-    io.to("general").emit("connected-socket-users", getusers(io, socket));
+    io.to("general").emit("connected-socket-users", pregame.getusers(io, socket));
     /*  
     const users = [];
       var clients = io.sockets.sockets;
@@ -47,11 +47,11 @@ io.on("connection", (socket) => {
       });
     */
     socket.on("list_available_users", function (data, counter) {
-        socket.emit("connected-socket-users", getusers(io, socket));
+        socket.emit("connected-socket-users", pregame.getusers(io, socket));
     });
 
-    socket.on("disconect", () => {
-        socket.emit("connected-socket-users", getusers(io, socket));
+    socket.on("disconnect", () => {
+        socket.emit("connected-socket-users", pregame.getusers(io, socket));
     });    
 
 
@@ -60,17 +60,3 @@ io.on("connection", (socket) => {
 server.listen(3001, () => {
     console.log("SERVER IS RUNNING");
 });
-
-//commuication with the front end
-function getusers(io, socket) {
-    const users = [];
-    var clients = io.sockets;
-    clients.sockets.forEach(function (data, counter) {
-        users.push({
-            userSocketID: data.id,
-            username: data.username,
-        });
-        //socket.emit("connected-socket-users", users);
-    })
-    return users
-}

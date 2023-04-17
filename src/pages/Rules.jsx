@@ -1,4 +1,6 @@
-export default function Rules () {
+import React, { useState } from 'react';
+
+export default function Rules() {
   return (
     <>
       <h1 className='center-align'>How to Play</h1>
