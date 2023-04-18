@@ -3,8 +3,8 @@ import Active from './game_state/Active'
 import Post from './game_state/Post'
 import React, { useState } from 'react'
 
-export default function Game({ availableUsers }) {
-  console.log(`availableUsers from Game ${availableUsers}`)
+export default function Game({ availableUsers, currentUser }) {
+  
   const [gameState, setGameState] = useState('pre')
   let pre = false
   let active = false
@@ -36,6 +36,7 @@ export default function Game({ availableUsers }) {
             <Pre
               setGameState={setGameState}
               availableUsers={availableUsers}
+              currentUser={currentUser}
             />
             : (active ?
               <Active setGameState={setGameState} />

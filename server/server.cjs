@@ -20,6 +20,7 @@ const SUPABASE_URL = 'https://fzlomsndqkamyrqjjzyb.supabase.co'
 const SUPABASE_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6bG9tc25kcWthbXlycWpqenliIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk4Njg3MzIsImV4cCI6MTk5NTQ0NDczMn0.mjcd0jLLcFFvrQpO0tver9lgh_82CEFFBEaxGq1WaKs`
 //Luke's custom functions
 const pregame = require((path.join(__dirname, 'pregame_actions/pregame.cjs')));
+const gameCreation = require((path.join(__dirname, 'pregame_actions/game_creation.cjs')));
 //res.sendFile(path.join(__dirname, '/build/index.html'))
 app.use(express.static(path.join(__dirname, '/dist')))
 
@@ -30,26 +31,22 @@ io.on("connection", (socket) => {
     socket.userID = socket.handshake.headers["x-replit-user-id"]
     console.log(`${socket.username} | ${socket.userID}`);
     //on connection, return the username to establish authentication worked
-    socket.emit("user_connection", socket.username);
+    socket.emit("user_connection", socket.userID);
     if(socket.username){
       pregame.createPlayer(socket.username,socket.userID)
     }
     socket.join("general");
     io.to("general").emit("connected-socket-users", pregame.getusers(io, socket));
-    /*  
-    const users = [];
-      var clients = io.sockets.sockets;
-      var count = 0;
-      clients.forEach(function (data) {
-          count++;
-          console.log(`User ${count}: ${data.id}`)
-          users.push(data)
-      });
-    */
+   
     socket.on("list_available_users", function (data, counter) {
         socket.emit("connected-socket-users", pregame.getusers(io, socket));
     });
 
+
+    socket.on("create_game", (startPlayerid, joinPlayerid) => {
+      socket.emit("game_created", gameCreation.createGame(startPlayerid, joinPlayerid));
+    });
+  
     socket.on("disconnect", () => {
         socket.emit("connected-socket-users", pregame.getusers(io, socket));
     });    

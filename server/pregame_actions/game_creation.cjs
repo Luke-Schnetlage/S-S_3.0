@@ -13,7 +13,7 @@ async function createGame(startPlayer, joinPlayer){
   if (error) {
     console.log(error)
   } else {
-    return data[0]
+    return data
   }
 }
 

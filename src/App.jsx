@@ -15,25 +15,22 @@ import Footer from './static_content/Footer';
 
 function App() {
   const [gameState, setGameState] = useState('pre');
-  const [availableUsers, setAvailableUsers] = useState('');
+  const [availableUsers, setAvailableUsers] = useState('{}');
   const [currentUser, setCurrentUser] = useState('');
   useEffect(() => {
-    socket.on('user_connection', (username) => {
-      console.log(username)
-      setCurrentUser(username);
+    socket.on('user_connection', (userID) => {
+      console.log(userID)
+      setCurrentUser(userID)
+        console.log(`currentUser${currentUser}`)
       socket.emit('list_available_users')
     })
-  })
+  }, [currentUser])
   useEffect(() => {
     console.log(`awaiting user list. . .`)
     socket.on('connected-socket-users', (users) => {
-      console.log(users)
-      setAvailableUsers(users.map((users) => {
-        return users.username
-      console.log(`available useres from app ${availableUsers}`)
-      }))
+      setAvailableUsers(users)
     })
-  }, [])
+  }, [availableUsers])
   return (
     <div>
       <Navbar />
@@ -41,7 +38,7 @@ function App() {
         <div id='content-wrap'>
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/game' element={<Game availableUsers={availableUsers} setGameState={setGameState} />} />
+            <Route path='/game' element={<Game availableUsers={availableUsers} setGameState={setGameState} currentUser={currentUser} />} />
             <Route path='/rules' element={<Rules />} />
           </Routes>
         </div>

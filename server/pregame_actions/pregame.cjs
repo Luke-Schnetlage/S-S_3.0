@@ -13,20 +13,32 @@ async function createPlayer(username, id) {
   // console.log('Player inserted');
 }
 
+/*
+async function getusers(io, socket){
+  users = getonlineusers(io, socket)
+  const { data , error } = await supabase
+    .from('player')
+    .select('*')
+    .eq('username',users.username)
+  if (error) {
+    console.log(error)
+  }
+  return data
+}
+*/
+
 function getusers(io, socket) {
     const users = [];
     var clients = io.sockets;
     clients.sockets.forEach(function (data, counter) {
         users.push({
-            userSocketID: data.id,
+            userID: data.userID,
             username: data.username,
         });
         //socket.emit("connected-socket-users", users);
     })
     return users
 }
-
-
 
 module.exports = {
   createPlayer: createPlayer,
