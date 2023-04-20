@@ -1,39 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import socket from '../../socket/socket.js';
-//import { useHistory } from 'react-router-dom';
 
-export default function Active({ setGameState }) {
-  const [connectedUsers, setConnectedUsers] = useState([]);
+export default function Active({ setGameState, gameID }) {
+  const [deck, setDeck] = useState(0)
+  const [opponentReady, setOpponentReady] = useState(false)
+  console.log(`locally stored gameID: ${gameID}`)
+  
+  function selectDeck(deckID) {
+    setDeck(deckID)
+    socket.emit('deck_selected', deck, gameID)
+  }
+  socket.on('opponent_ready', () => {
+    setOpponentReady(true)
+  })
 
-  useEffect(() => {
-    socket.emit('list_available_users');
-
-    socket.on('connected-socket-users', (clients) => {
-      setConnectedUsers(clients);
-    });
-
-    return () => {
-      socket.removeAllListeners('connected-socket-users');
-    }
-  }, [])
-
-  return (
-    <div className='center-align'>
-      <h1>Active-Game</h1>
+  if (!deck) {
+    return (
       <div>
-        <button onClick={() => setGameState('post')}>Advance to Post</button>
-      </div>
-      <div>
-        <button onClick={() => setGameState('pre')}>Retreat to Pre</button>
-      </div>
-      <div>
-        <h4>Connected users: </h4>
+        <h2>Select Thy Deck</h2>
         <ul>
-          {connectedUsers.map((user) => (
-            <li key={user}>{user}</li>
-          ))}
+          <li><button onClick={() => selectDeck(1)}>Water</button></li>
+          <li><button onClick={() => selectDeck(2)}>Fire</button></li>
+          <li><button onClick={() => selectDeck(3)}>Wind</button></li>
         </ul>
       </div>
+    )
+  }
+  if (deck && !opponentReady) {
+    return (
+      <div>
+        Opponent is choosing deck.
+      </div>
+    )
+  }
+  if (deck && opponentReady) {
+    return (
+      <h1>Let the game begin!</h1>
+    )
+  }
+  return (
+    <div className='center-align'>
+      <h1>{deck}</h1>
     </div>
   )
 }

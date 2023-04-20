@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import Logo from './nav_logo/sas_only_logo.png';
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -12,6 +12,7 @@ function Navbar() {
   return (
     <nav className='nav'>
       <Link to='/'>
+        <img src={Logo} width={100} height={100}/>
         <span className='site-title'>Sellswords and Spellcrafts</span>
       </Link>
       <div className='burger' onClick={handleBurgerClick}>

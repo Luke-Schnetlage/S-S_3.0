@@ -6,8 +6,8 @@ const { data, error } = await supabase
   .from('cards_in_deck')
   .select('card_space, cardid')
   .match({ playerid: playerID, gameid: gameID })
-  .limit(1)
   .is('card_space', NOT NULL)
+  .limit(1);
  if (error) {
     console.log(error)
     return

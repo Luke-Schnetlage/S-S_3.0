@@ -4,19 +4,12 @@ import React, { useState, useEffect } from 'react';
 import socket from '../../socket/socket.js';
 
 export default function Pre({ setGameState, availableUsers, currentUser }) {
-  console.log(`availableUser type: ${typeof availableUser}`)
-  console.log(`pre current user: ${currentUser}`)
-
-  function startGame(currentUser, opponent) {
-    if (!opponent) {
+  function startGame(currentUser, opponentID, opponentSocketID) {
+    if (!opponentID) {
       console.log(`unsuccessful pass!`)
     }
-    
-    console.log(opponent)
-    socket.emit('create_game', currentUser, opponent)
-    socket.on('game_created', () => {
-      console.log('game created!')
-    })
+    console.log(`current user: ${currentUser}, other user: ${opponentID}`)
+    socket.emit('create_game', currentUser, opponentID, opponentSocketID)
   }
 
   return (
@@ -27,7 +20,7 @@ export default function Pre({ setGameState, availableUsers, currentUser }) {
           {availableUsers.map(user => (
             <li key={user.usertID}>
               {user.username}&nbsp;
-              <button onClick={() => startGame(currentUser, user.userID)}>Challenge Player</button>
+              <button onClick={() => startGame(currentUser, user.userID, user.socketID)}>Challenge Player</button>
             </li>
           ))}
         </ul>

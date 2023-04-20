@@ -8,7 +8,7 @@ async function createPlayer(username, id) {
       username: username
     })
   if (error) {
-    console.log(error)
+    //console.log(error)
   }
   // console.log('Player inserted');
 }
@@ -34,6 +34,7 @@ function getusers(io, socket) {
         users.push({
             userID: data.userID,
             username: data.username,
+            socketID: data.id
         });
         //socket.emit("connected-socket-users", users);
     })

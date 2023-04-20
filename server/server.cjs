@@ -24,9 +24,11 @@ const gameCreation = require((path.join(__dirname, 'pregame_actions/game_creatio
 //res.sendFile(path.join(__dirname, '/build/index.html'))
 app.use(express.static(path.join(__dirname, '/dist')))
 
+
 //event listener for a client to make a connection
 io.on("connection", (socket) => {
     //console.log(`User Connected: ${socket.id}`)
+    var games = []
     socket.username = socket.handshake.headers["x-replit-user-name"]
     socket.userID = socket.handshake.headers["x-replit-user-id"]
     console.log(`${socket.username} | ${socket.userID}`);
@@ -42,10 +44,41 @@ io.on("connection", (socket) => {
         socket.emit("connected-socket-users", pregame.getusers(io, socket));
     });
 
-
-    socket.on("create_game", (startPlayerid, joinPlayerid) => {
-      socket.emit("game_created", gameCreation.createGame(startPlayerid, joinPlayerid));
+    socket.on("create_game", (startPlayerid, joinPlayerid, joinplayersocketID) => {
+      gameCreation.createGame(startPlayerid, joinPlayerid).then( game => {
+        
+        console.log("#1 game =")
+        console.log(game)
+        /*
+        games[game.gameid] = game
+        console.log("#2 game =")
+        console.log(games[game.gameid])
+        io.to(joinplayersocketID).emit("game_request", startPlayerid)
+        socket.leave("general")
+        socket.join(game.gameid)  
+        */
+      });
     });
+                                                      
+    socket.on("join_game", (startPlayerid,gameid) => { 
+      console.log("#3 gameid =")
+      console.log(gameid)
+      console.log("#4 game =")
+      console.log(games[gameid])
+      socket.emit("game_created", games[gameid]); 
+      socket.leave("general") 
+      socket.join(gameid) 
+      
+      io.to(gameid).emit("game_joined", gameid)
+    });
+
+
+    socket.on("deck_selected", (decklistid,gameid) => { 
+      console.log("line 64: gameid =")
+      console.log(gameid)
+      socket.to(games[gameid].gameid).emit("opponent_ready", gameCreation.populate_cards_in_deck(decklistid,socket.userID,gameid))
+    }); 
+
   
     socket.on("disconnect", () => {
         socket.emit("connected-socket-users", pregame.getusers(io, socket));

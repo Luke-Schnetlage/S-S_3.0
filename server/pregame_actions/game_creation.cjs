@@ -1,5 +1,9 @@
-const { createClient } = require('@supabase/supabase-js') // Allows user to access Supabase DB
-const supabase = createClient('https://fzlomsndqkamyrqjjzyb.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6bG9tc25kcWthbXlycWpqenliIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk4Njg3MzIsImV4cCI6MTk5NTQ0NDczMn0.mjcd0jLLcFFvrQpO0tver9lgh_82CEFFBEaxGq1WaKs') // URL, API Key
+//const { createClient } = require('@supabase/supabase-js') // Allows user to access Supabase DB
+//const supabase = createClient('https://fzlomsndqkamyrqjjzyb.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6bG9tc25kcWthbXlycWpqenliIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk4Njg3MzIsImV4cCI6MTk5NTQ0NDczMn0.mjcd0jLLcFFvrQpO0tver9lgh_82CEFFBEaxGq1WaKs') // URL, API Key
+const { createClient } = require('@supabase/supabase-js')
+const SUPABASE_URL = 'https://fzlomsndqkamyrqjjzyb.supabase.co'
+const SUPABASE_KEY = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6bG9tc25kcWthbXlycWpqenliIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk4Njg3MzIsImV4cCI6MTk5NTQ0NDczMn0.mjcd0jLLcFFvrQpO0tver9lgh_82CEFFBEaxGq1WaKs`
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
 
 async function createGame(startPlayer, joinPlayer){
@@ -12,11 +16,27 @@ async function createGame(startPlayer, joinPlayer){
     })
   if (error) {
     console.log(error)
+  } 
+  return data[0]
+}
+/*
+async function createGame(startPlayer, joinPlayer){
+  console.log("createGame is run")
+  const { data, error } = await supabase
+    .from('game')
+    .insert({
+      start_playerid: startPlayer,
+      join_playerid: joinPlayer,
+      result: 2
+    })
+  if (error) {
+    console.log(error)
   } else {
-    return data
+    console.log(data)
+    return data[0]
   }
 }
-
+*/
 
 async function getdecklist(decklistid){
   const { data, error } = await supabase
@@ -28,7 +48,6 @@ async function getdecklist(decklistid){
   } 
   return data
 }
-
 
 
 function shuffle(sourceArray) {
