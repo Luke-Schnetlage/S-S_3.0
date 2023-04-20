@@ -46,17 +46,14 @@ io.on("connection", (socket) => {
 
     socket.on("create_game", (startPlayerid, joinPlayerid, joinplayersocketID) => {
       gameCreation.createGame(startPlayerid, joinPlayerid).then( game => {
-        
-        console.log("#1 game =")
-        console.log(game)
-        /*
+        //console.log("#1 game =")
+        //console.log(game)
         games[game.gameid] = game
-        console.log("#2 game =")
-        console.log(games[game.gameid])
+        //console.log("#2 game =")
+        //console.log(games[game.gameid])
         io.to(joinplayersocketID).emit("game_request", startPlayerid)
         socket.leave("general")
         socket.join(game.gameid)  
-        */
       });
     });
                                                       

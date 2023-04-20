@@ -14,6 +14,7 @@ async function createGame(startPlayer, joinPlayer){
       join_playerid: joinPlayer,
       result: 2
     })
+    .select()
   if (error) {
     console.log(error)
   } 

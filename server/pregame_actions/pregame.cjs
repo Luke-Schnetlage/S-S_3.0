@@ -7,10 +7,12 @@ async function createPlayer(username, id) {
       userid : id,
       username: username
     })
+    .select()
   if (error) {
-    //console.log(error)
+    console.log(error)
   }
   // console.log('Player inserted');
+  return data
 }
 
 /*
