@@ -4,8 +4,6 @@ import Post from './game_state/Post'
 import React, { useState } from 'react'
 
 export default function Game({ availableUsers, currentUser, gameState, gameID }) {
-  
-  
   let pre = false
   let active = false
   let post = false
@@ -32,19 +30,21 @@ export default function Game({ availableUsers, currentUser, gameState, gameID })
     <div className='center-align'>
       <>
         {
-          pre ?
-            <Pre
+          pre
+            ? <Pre
               setGameState={gameState}
               availableUsers={availableUsers}
               currentUser={currentUser}
             />
-            : (active ?
-              <Active 
+            : (active
+              ? <Active
                 setGameState={gameState}
                 gameID={gameID}
+                currentUser={currentUser}
+
               />
-              : (post ?
-                <Post setGameState={gameState} />
+              : (post
+                ? <Post setGameState={gameState} />
                 : <p>Please refresh your cache!</p>))
         }
       </>

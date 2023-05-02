@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import socket from '../../socket/socket.js';
+import React, { useState, useEffect } from 'react'
+import socket from '../../socket/socket.js'
+import Gameboard from './board/Board'
 
-export default function Active({ setGameState, gameID }) {
+export default function Active({ setGameState, gameID, currentUser }) {
   const [deck, setDeck] = useState(0)
   const [opponentReady, setOpponentReady] = useState(false)
-  console.log(`locally stored gameID: ${gameID}`)
-  
+
+
   function selectDeck(deckID) {
+    console.log(`gameID: ${gameID}`)
+    socket.emit('deck_selected', deckID, gameID)
+    console.log('ready up emitted!')
     setDeck(deckID)
-    socket.emit('deck_selected', deck, gameID)
   }
   socket.on('opponent_ready', () => {
+    console.log('opponent ready!')
     setOpponentReady(true)
   })
 
@@ -19,9 +23,9 @@ export default function Active({ setGameState, gameID }) {
       <div>
         <h2>Select Thy Deck</h2>
         <ul>
-          <li><button onClick={() => selectDeck(1)}>Water</button></li>
-          <li><button onClick={() => selectDeck(2)}>Fire</button></li>
-          <li><button onClick={() => selectDeck(3)}>Wind</button></li>
+          <li><button className="button" onClick={() => selectDeck(2)}>Water</button></li>
+          <li><button className="button" onClick={() => selectDeck(3)}>Fire</button></li>
+          <li><button className="button" onClick={() => selectDeck(4)}>Wind</button></li>
         </ul>
       </div>
     )
@@ -34,13 +38,15 @@ export default function Active({ setGameState, gameID }) {
     )
   }
   if (deck && opponentReady) {
+    socket.emit('both_players_ready', currentUser)
     return (
-      <h1>Let the game begin!</h1>
+      <Gameboard
+        gameID={gameID}
+        currentUser={currentUser}
+      />
     )
   }
   return (
-    <div className='center-align'>
-      <h1>{deck}</h1>
-    </div>
+    <div className='center-align' />
   )
 }

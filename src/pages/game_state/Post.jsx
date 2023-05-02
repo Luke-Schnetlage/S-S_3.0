@@ -4,7 +4,7 @@ import socket from '../../socket/socket.js'
 // This displays the post state of the game
 // Button to go back to active game
 // with a list of connect users
-export default function Post({ setGameState }) {
+export default function Post ({ setGameState }) {
   const [connectedUsers, setConnectedUsers] = useState([])
 
   // When the component is mounted, fetch the list of connected users
@@ -17,7 +17,7 @@ export default function Post({ setGameState }) {
     }) //
 
     return () => {
-      socket.removeAllListeners('connected-socket-users') 
+      socket.removeAllListeners('connected-socket-users')
     } // remove all listeners from socket
   }, [])
 

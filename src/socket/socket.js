@@ -1,5 +1,5 @@
-import { io } from 'socket.io-client';
+import { io } from 'socket.io-client'
 
-const socket = io.connect('https://SandS-replit-rebuild.luke-schnetlage.repl.co');
+const socket = io.connect('https://SandS-replit-rebuild.luke-schnetlage.repl.co')
 
-export default socket;
+export default socket

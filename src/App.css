@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 main {
   text-align: center;
   vertical-align: center;
@@ -9,3 +10,225 @@ main {
   padding: 10px;
   margin-top: 10px;
 }
+
+body {
+  margin: auto;
+  background-image: url("./static_content/nav_logo/sas_background.png") !important;;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 0px;
+  font-family: 'Inter', sans-serif;
+  display: grid;
+}
+body::before {
+  content: '';
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.65);
+  opacity: 1;
+  z-index: -2;
+}
+.p1__board, .p2__board {
+  background-color: rgba(0,0,0,0.5);
+  border-color: gray;
+  border-radius: 25px;
+  border-style: solid;
+  border-width: 1px;
+  margin: 10px auto;
+  padding: 20px;
+  width: 80%;
+  position: relative;
+}
+.p2__stats-label {
+  position: absolute;
+  bottom: 100px;
+  left: 27px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #DEBD38;
+}
+.p2__stats {
+  position: absolute;
+  border: 1px solid #820082;
+  border-radius: 20px;
+  background-color: #5f5f5f;
+  height: 90px;
+  width: 123px;;
+  bottom: 10px;
+  left: 15px;
+}
+.p2__opp-label {
+  position: absolute;
+  top: 15px;
+  right: 47px;
+}
+.p2__opp-stats {
+  position: absolute;
+  border: 1px solid #820082;
+  border-radius: 20px;
+  background-color: #5f5f5f;
+  height: 75px;
+  width: 150px;
+  top: 40px;
+  right: 35px;
+}
+.button{
+  background-color: #430146;
+  border: 1px solid #DEBD38;
+  border-radius: 10px;
+  color: #CCCCCB;
+}
+
+.button:hover{
+  background-color: #66016b;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.slot{
+  border: none;
+  width: 107px !important;
+  height: 130px !important;
+  margin: 3px;
+  background-color: red;
+  background-size: cover; 
+}
+
+.slot:active{
+  transform: scale(2.0); 
+  transition: all .2s;
+  transition-delay: .5s;
+}
+
+.card {
+  transition: all .2s ease-in-out; 
+  display: inline-block;
+  background-image: url("./styles/cards/4.png");
+  background-size: cover;
+  border: none;
+  width: 214px;
+  height: 259px;
+  margin: 10px;
+}
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  height: auto;
+}
+.card {
+  width: 20%;
+  height: 215px;
+  border: 1px solid black;
+  border-radius: 27px;
+  position: relative;
+  display: inline-block;
+  transition: all 0.2s ease-in-out;
+}
+@media only screen and (max-width: 768px) {
+  .card {
+    width: 30%;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .card {
+    width: 100%;
+  }
+}
+.card-container: hover .card {
+  transform: translateY(-30px); 
+  z-index: 1;
+}
+.card:hover {
+  transform: translateY(-30px);
+  z-index: 2;
+}
+.card-4 {
+  background-image: url("./styles/cards/4.png") !important;
+}
+.card-6 {
+  background-image: url("./styles/cards/6.png") !important;
+}
+.card-7 {
+  background-image: url("./styles/cards/7.png") !important;
+}
+.card-8 {
+  background-image: url("./styles/cards/8.png") !important;
+}
+.card-9 {
+  background-image: url("./styles/cards/9.png") !important;
+}
+.card-14 {
+  background-image: url("./styles/cards/14.png") !important;
+}
+.card-15 {
+  background-image: url("./styles/cards/15.png") !important;
+}
+.card-16 {
+  background-image: url("./styles/cards/16.png") !important;
+}
+.card-17 {
+  background-image: url("./styles/cards/17.png") !important;
+}
+.card-18 {
+  background-image: url("./styles/cards/18.png") !important;
+}
+.card-19 {
+  background-image: url("./styles/cards/19.png") !important;
+}
+.card-24 {
+  background-image: url("./styles/cards/24.png") !important;
+}
+.card-27 {
+  background-image: url("./styles/cards/27.png") !important;
+}
+.card-29 {
+  background-image: url("./styles/cards/29.png") !important;
+}
+.card-30 {
+  background-image: url("./styles/cards/30.png") !important;
+}
+.card-32 {
+  background-image: url("./styles/cards/32.png") !important;
+}
+.card-37 {
+  background-image: url("./styles/cards/37.png") !important;
+}
+.card-39 {
+  background-image: url("./styles/cards/39.png") !important;
+}
+.card-41 {
+  background-image: url("./styles/cards/41.png") !important;
+}
+.card-42 {
+  background-image: url("./styles/cards/42.png") !important;
+}
+.card-43 {
+  background-image: url("./styles/cards/43.png") !important;
+}
+.card-48 {
+  background-image: url("./styles/cards/48.png") !important;
+}
+.card-50 {
+  background-image: url("./styles/cards/50.png") !important;
+}
+
+
+
+
+
+
