@@ -1,17 +1,8 @@
-## Running React on Repl.it
-
-[React](https://reactjs.org/) is a popular JavaScript library for building user interfaces.
-
-[Vite](https://vitejs.dev/) is a blazing fast frontend build tool that includes features like Hot Module Reloading (HMR), optimized builds, and TypeScript support out of the box.
-
-Using the two in conjunction is one of the fastest ways to build a web app.
-
-### Getting Started
-- Hit run
-- Edit [App.jsx](#src/App.jsx) and watch it live update!
-
-By default, Replit runs the `dev` script, but you can configure it by changing the `run` field in the [configuration file](#.replit). Here are the vite docs for [serving production websites](https://vitejs.dev/guide/build.html)
-
-### Typescript
-
-Just rename any file from `.jsx` to `.tsx`. You can also try our [TypeScript Template](https://replit.com/@replit/React-TypeScript)
+Sellswords & Spellcrafts is a web-based 1v1 card game. Users will connect to a central web server in which they can be matched with other users. Users will take turns summoning minions and casting invokations to eventually reduce their opponent's life total to 0.
+The file structure is as follows:
+db - contains examples and boilerplate code for writing database queries using Supabase's javascript api.
+documentation - self explanitory, documentation relating to requirments and overall progress
+public - a folder to contain non-secure assets to be server to the client
+server - the server file and accompinying logic for various game events
+src - the client side appllication
+subabase_db - the sql functions used to create the database in Supabase
