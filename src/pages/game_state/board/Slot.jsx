@@ -26,7 +26,7 @@ export default function Slot({ slotType, slotID, cardAttempt, cardPlaced, curren
   return (
     <>
       {
-        cardPlaced ? <button className={`slot card-${cardPlaced}`} onClick={() => {selectCard(cardPlaced, 'zone', slotID)}}>{cardPlaced}</button>
+        cardPlaced ? <button className={`slot card-${cardPlaced}`} onClick={() => {selectCard(cardPlaced, 'zone', slotID)}}>&nbsp;</button>
           : <button className='slot' onClick={() => { slotSelected() }}>{slotType}</button>
       }
     </>

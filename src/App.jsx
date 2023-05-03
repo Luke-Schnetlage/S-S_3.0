@@ -12,7 +12,6 @@ import Navbar from './static_content/Navbar'
 import Game from './pages/Game'
 import Home from './pages/Home'
 import Rules from './pages/Rules'
-import Login from './pages/Login';
 import Footer from './static_content/Footer'
 
 function App() {
@@ -67,7 +66,6 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/game' element={<Game availableUsers={availableUsers} gameState={gameState} currentUser={currentUser} gameID={gameID} />} />
             <Route path='/rules' element={<Rules />} />
-            <Route path='/login' element={<Login />} />
           </Routes>
         </div>
         <Footer />
