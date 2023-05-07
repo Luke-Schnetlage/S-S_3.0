@@ -7,15 +7,15 @@ const infoFunctions = require((path.join(__dirname, '/info_functions.cjs')))
 const handFunctions = require((path.join(__dirname, '/hand_functions.cjs')))
 
 
-async function start_turn(gameid, playerid){
+async function startTurn(gameid, playerid){
   //at the start of turn, all a player's terrain becomes active, and the draw a card
   //on the back end, they become the active player
-  //console.log(`start_turn begin`)
+  //console.log(`startTurn begin`)
   //console.log(`gameid ${gameid}`)
   //console.log(`playerid ${playerid}`)
   const cardPromise = await handFunctions.draw(playerid, gameid)
-  const terrainPromise = await resetterrain(gameid, playerid)
-  const game = await infoFunctions.getgame(gameid)
+  const terrainPromise = await reserTerrain(gameid, playerid)
+  const game = await infoFunctions.getGame(gameid)
   const { data, error } = await supabase
   .from('game')
   .update({active_player : playerid})
@@ -24,12 +24,12 @@ async function start_turn(gameid, playerid){
   if (error) {
     console.log(error)
   }
-  //console.log(`start_turn ${JSON.stringify(data)}`)
+  //console.log(`startTurn ${JSON.stringify(data)}`)
   return data
 }
 
-async function resetterrain(gameid, playerid){
-  infoFunctions.getplayerboard(playerid, gameid).then(async (board) => {
+async function reserTerrain(gameid, playerid){
+  infoFunctions.getPlayerBoard(playerid, gameid).then(async (board) => {
     //console.log(board[0].spent_terrain)
     //console.log(board[0].active_terrain)
     const { data, error } = await supabase
@@ -46,5 +46,5 @@ async function resetterrain(gameid, playerid){
 }
 
 module.exports = {
-  start_turn
+  startTurn
 }

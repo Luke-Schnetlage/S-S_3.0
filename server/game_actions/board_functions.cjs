@@ -8,35 +8,35 @@ const handFunctions = require((path.join(__dirname, '/hand_functions.cjs')))
 
 
 //This funtion REALLY needs to be tested
-async function attackplayer(attackingplayerid,targetplayerid,gameid,minionid,zoneid) {
+async function attackPlayer(attackingplayerid,targetplayerid,gameid,minionid,zoneid) {
   //an attack (on a player)can only occur when a minion in a contested zone attacks a player directly
   //zone id is either zone1, zone2, or zone3
   //first we check if its a legal attack i.e. can we pay the attack cost
-  const minion = await infoFunctions.getminion(minionid) 
-  const energypaid = await payenergy(attackingplayerid, gameid, minion.atk_cost)
+  const minion = await infoFunctions.getMinion(minionid) 
+  const energypaid = await payEnergy(attackingplayerid, gameid, minion.atk_cost)
   if (!energypaid){
     return false
   }
   zoneid = `${zoneid}_pow`
-  const contestedzone = await infoFunctions.getcontestedzone(gameid)
+  const contestedzone = await infoFunctions.getContestedZones(gameid)
   dmg = contestedzone[0][zoneid]
-  return await damageplayer (targetplayerid,gameid,dmg)
-  //const targetboard = infoFunctions.getplayerboard(targetplayerid, gameid)
+  return await damagePlayer (targetplayerid,gameid,dmg)
+  //const targetboard = infoFunctions.getPlayerBoard(targetplayerid, gameid)
 }
 
-async function attackzone(attackingplayerid,gameid,attackingminionid,homezone,targetzone){
+async function attackZone(attackingplayerid,gameid,attackingminionid,homezone,targetzone){
   //targetzone is either zone1, zone2, zone3
   //homezone is either homezone is either minion1, minion2, minion3 
   //add support for homezone: zone1, zone2, or zone3
   zoneminid = `${targetzone}_minid`
   homeregion = homezone.substring(0, homezone.length - 1)//minion or zone
   zonenumber = (homezone.substring(homezone.length - 1)) //1,2,or 3
-  const minion = await infoFunctions.getminion(attackingminionid)
-  const energypaid = await payenergy(attackingplayerid, gameid, minion.atk_cost)
+  const minion = await infoFunctions.getMinion(attackingminionid)
+  const energypaid = await payEnergy(attackingplayerid, gameid, minion.atk_cost)
   if (!energypaid){
     return false
   }
-  contestedzone = await infoFunctions.getcontestedzone(gameid)
+  contestedzone = await infoFunctions.getContestedZones(gameid)
   //console.log(`contestedzone ${JSON.stringify(contestedzone)}`)
   var occupiedzone = contestedzone[0][zoneminid]
   var moveminion = true
@@ -54,7 +54,7 @@ async function attackzone(attackingplayerid,gameid,attackingminionid,homezone,ta
       //otherwise the minion is in the contested zone already and its power is contestedzone[0][`${homezone}_pow`]
       dmg = contestedzone[0][`${homezone}_pow`]
     }
-    const miniondestroyed =  await damageminion(gameid, targetzone, dmg)
+    const miniondestroyed =  await damageMinion(gameid, targetzone, dmg)
     moveminion = miniondestroyed
   }
 
@@ -103,10 +103,10 @@ async function attackzone(attackingplayerid,gameid,attackingminionid,homezone,ta
   return false
 }
 
-async function damageminion(gameid, zoneid, dmg) {
+async function damageMinion(gameid, zoneid, dmg) {
   //damage a minion in a contested zone
   //zoneid is either zone1, zone2, zone3
-  contestedzone = await infoFunctions.getcontestedzone(gameid)
+  contestedzone = await infoFunctions.getContestedZones(gameid)
   //console.log(`contestedzone ${contestedzone}`)
   zonepow = `${zoneid}_pow`
   zoneowner = `${zoneid}_owner`
@@ -142,16 +142,16 @@ async function damageminion(gameid, zoneid, dmg) {
 }
 
 
-async function placeminion(playerid, gameid, minionid, zoneid) {
+async function placeMinion(playerid, gameid, minionid, zoneid) {
 
-  const boardPromise = infoFunctions.getplayerboard(playerid, gameid);
-  const cardPromise = infoFunctions.getminion(minionid)
+  const boardPromise = infoFunctions.getPlayerBoard(playerid, gameid);
+  const cardPromise = infoFunctions.getMinion(minionid)
   const [board, card] = await Promise.all([boardPromise,cardPromise])
   const occupiedSlot =  (board[0][zoneid] != null);
   if (occupiedSlot) {
     return false;
   }
-  await damageplayer(playerid,gameid,card.summon_cost)
+  await damagePlayer(playerid,gameid,card.summon_cost)
   const {data,error} = await supabase
       .from('board')
       .update({ [zoneid]: minionid })
@@ -165,8 +165,8 @@ async function placeminion(playerid, gameid, minionid, zoneid) {
   return data;
 }
 
-async function placeterrain(playerid, gameid){
-  const board = await infoFunctions.getplayerboard(playerid, gameid)
+async function placeTerrain(playerid, gameid){
+  const board = await infoFunctions.getPlayerBoard(playerid, gameid)
   const { data, error } = await supabase
     .from('board')
     .update({
@@ -179,8 +179,8 @@ async function placeterrain(playerid, gameid){
   return data
 }
 
-async function payenergy(playerid, gameid, energyCost){
-  const board = await infoFunctions.getplayerboard(playerid, gameid)
+async function payEnergy(playerid, gameid, energyCost){
+  const board = await infoFunctions.getPlayerBoard(playerid, gameid)
   if (board[0].active_terrain - energyCost < 0){
     return false
   }
@@ -199,8 +199,8 @@ async function payenergy(playerid, gameid, energyCost){
 }
 
 
-async function damageplayer (playerid,gameid,dmg) {
-  const board = await infoFunctions.getplayerboard(playerid, gameid)
+async function damagePlayer (playerid,gameid,dmg) {
+  const board = await infoFunctions.getPlayerBoard(playerid, gameid)
   const { data, error } = await supabase
     .from('board')
     .update({health: (board[0].health - dmg)})
@@ -215,9 +215,9 @@ async function damageplayer (playerid,gameid,dmg) {
 
 
 module.exports = {
-  damageplayer,
-  placeterrain,
-  placeminion,
-  attackzone
+  damagePlayer,
+  placeTerrain,
+  placeMinion,
+  attackZone
 }
 

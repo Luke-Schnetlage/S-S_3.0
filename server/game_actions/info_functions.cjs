@@ -3,17 +3,17 @@ const SUPABASE_URL = 'https://fzlomsndqkamyrqjjzyb.supabase.co'
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6bG9tc25kcWthbXlycWpqenliIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk4Njg3MzIsImV4cCI6MTk5NTQ0NDczMn0.mjcd0jLLcFFvrQpO0tver9lgh_82CEFFBEaxGq1WaKs'
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-async function getfullgame (gameid) {
+async function getFullGame (gameid) {
   try{
-    const game = await getgame(gameid);
+    const game = await getGame(gameid);
     //console.log(`game ${JSON.stringify(game)}`)
-    const player1cardsPromise = getcardsindeck(game.start_playerid, gameid);
-    const player2cardsPromise = getcardsindeck(game.join_playerid, gameid);
-    const player1handPromise = getplayerhand(game.start_playerid, gameid);
-    const player2handPromise = getplayerhand(game.join_playerid, gameid);
-    const player1boardPromise = getplayerboard(game.start_playerid, gameid);
-    const player2boardPromise = getplayerboard(game.join_playerid, gameid);
-    const contestedzonePromise = getcontestedzone(gameid);
+    const player1cardsPromise = getCardsInDeck(game.start_playerid, gameid);
+    const player2cardsPromise = getCardsInDeck(game.join_playerid, gameid);
+    const player1handPromise = getPlayerHand(game.start_playerid, gameid);
+    const player2handPromise = getPlayerHand(game.join_playerid, gameid);
+    const player1boardPromise = getPlayerBoard(game.start_playerid, gameid);
+    const player2boardPromise = getPlayerBoard(game.join_playerid, gameid);
+    const contestedzonePromise = getContestedZones(gameid);
     
   
     const [player1cards, player2cards, player1hand, player2hand, player1board, player2board, contestedzone] = await Promise.all([player1cardsPromise, player2cardsPromise, player1handPromise, player2handPromise, player1boardPromise, player2boardPromise, contestedzonePromise])
@@ -40,7 +40,7 @@ async function getfullgame (gameid) {
   
 };
 
-async function getcardsindeck (playerid, gameid) {
+async function getCardsInDeck (playerid, gameid) {
   const { data, error } = await supabase
     .from('cards_in_deck')
     .select('*')
@@ -51,7 +51,7 @@ async function getcardsindeck (playerid, gameid) {
   return data
 }
 
-async function getplayerhand (playerid, gameid) {
+async function getPlayerHand (playerid, gameid) {
   const { data, error } = await supabase
     .from('hand')
     .select('*')
@@ -62,7 +62,7 @@ async function getplayerhand (playerid, gameid) {
   return data
 }
 
-async function getplayerboard (playerid, gameid) {
+async function getPlayerBoard (playerid, gameid) {
   const { data, error } = await supabase
     .from('board')
     .select('*')
@@ -73,7 +73,7 @@ async function getplayerboard (playerid, gameid) {
   return data
 }
 
-async function getcontestedzone (gameid) {
+async function getContestedZones (gameid) {
   const { data, error } = await supabase
     .from('contested_zone')
     .select('*')
@@ -84,7 +84,7 @@ async function getcontestedzone (gameid) {
   return data
 }
 
-async function getgame(gameid) {
+async function getGame(gameid) {
   const { data, error } = await supabase
     .from('game')
     .select('*')
@@ -95,7 +95,7 @@ async function getgame(gameid) {
   return data[0]
 }
 
-async function getactiveterrain(playerid, gameid){
+async function getActiveTerrain(playerid, gameid){
   const { data, error } = await supabase
     .from('board')
     .select('active_terrain')
@@ -106,7 +106,7 @@ async function getactiveterrain(playerid, gameid){
   return data
 }
 
-async function getminion(minionid){
+async function getMinion(minionid){
   const { data, error } = await supabase
     .from('minion')
     .select('*')
@@ -119,12 +119,12 @@ async function getminion(minionid){
 
 
 module.exports = {
-  getplayerboard,
-  getcontestedzone,
-  getcardsindeck,
-  getplayerhand,
-  getfullgame,
-  getgame,
-  getactiveterrain,
-  getminion
+  getPlayerBoard,
+  getContestedZones,
+  getCardsInDeck,
+  getPlayerHand,
+  getFullGame,
+  getGame,
+  getActiveTerrain,
+  getMinion
 }

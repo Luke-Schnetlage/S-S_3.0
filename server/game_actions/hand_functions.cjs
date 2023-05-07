@@ -7,10 +7,10 @@ async function draw (playerID, gameID, drawCount) {
   //it is assumed the default is drawing 1 card, but draw count can be sent to draw the specified number of cards
   try{
     drawCount = typeof drawCount === 'undefined' ? 1 : drawCount
-    const cardremovedP =  remove_card_from_deck(playerID, gameID,drawCount)
+    const cardremovedP =  removeCardFromDeck(playerID, gameID,drawCount)
     var cardremoved = await cardremovedP
-    //console.log(`remove_card_from_deck ${JSON.stringify(cardremoved)} `)
-    return await put_card_in_hand(playerID, gameID, cardremoved,drawCount) 
+    //console.log(`removeCardFromDeck ${JSON.stringify(cardremoved)} `)
+    return await putCardInHand(playerID, gameID, cardremoved,drawCount) 
   } catch (error){
     console.log(error)
   }
@@ -18,7 +18,7 @@ async function draw (playerID, gameID, drawCount) {
 
 
 
-async function remove_card_from_deck (playerID, gameID,drawCount) {
+async function removeCardFromDeck (playerID, gameID,drawCount) {
   // this assumes the deck is randomized, which it should be
   //console.log(`playerID ${playerID} `)
   //console.log(`gameID ${gameID} `)
@@ -33,13 +33,13 @@ async function remove_card_from_deck (playerID, gameID,drawCount) {
     console.log(error)
     throw error
   }
-  //console.log(`remove_card_from_deck ${JSON.stringify(data)} `)
+  //console.log(`removeCardFromDeck ${JSON.stringify(data)} `)
   //return data
-  //result = await put_card_in_hand(playerID, gameID, data[0].cardid)
+  //result = await putCardInHand(playerID, gameID, data[0].cardid)
   return data
 }
 
-async function put_card_in_hand (playerID, gameID, card, drawCount) {
+async function putCardInHand (playerID, gameID, card, drawCount) {
   var cardinsert = []
   //console.log(card)
   for (i= 0; i < drawCount; i++){
@@ -51,12 +51,12 @@ async function put_card_in_hand (playerID, gameID, card, drawCount) {
       cardinsert
     )
     .select();
-  //console.log(`put_card_in_hand data: ${JSON.stringify(data)}`);
-  //console.log(`put_card_in_hand error: ${JSON.stringify(error)}`);
+  //console.log(`putCardInHand data: ${JSON.stringify(data)}`);
+  //console.log(`putCardInHand error: ${JSON.stringify(error)}`);
   if (error) {
     console.log(error)
   }
-  //console.log(`put_card_in_hand ${JSON.stringify(data)} `)
+  //console.log(`putCardInHand ${JSON.stringify(data)} `)
   return data
 }
 
@@ -76,16 +76,16 @@ async function discard (playerID, gameID,cardID) {
     console.log(error)
     throw error
   }
-  //console.log(`remove_card_from_deck ${JSON.stringify(data)} `)
+  //console.log(`removeCardFromDeck ${JSON.stringify(data)} `)
   //return data
-  //result = await put_card_in_hand(playerID, gameID, data[0].cardid)
+  //result = await putCardInHand(playerID, gameID, data[0].cardid)
   return data
 }
 
 
 module.exports = {
-  remove_card_from_deck,
-  put_card_in_hand,
+  removeCardFromDeck,
+  putCardInHand,
   draw,
   discard
 }

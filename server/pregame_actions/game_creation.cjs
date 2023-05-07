@@ -13,7 +13,6 @@ async function createGame (startPlayer, joinPlayer) {
   } else {
     activePlayer = joinPlayer
   }
-
   const { data, error } = await supabase
     .from('game')
     .insert({
@@ -29,12 +28,12 @@ async function createGame (startPlayer, joinPlayer) {
   }
   await createBoard(startPlayer, data[0].gameid)
   await createBoard(joinPlayer, data[0].gameid)
-  await createcontestedzone(data[0].gameid)
-  await board_functions.placeterrain(activePlayer, data[0].gameid)
+  await createContestedZones(data[0].gameid)
+  await board_functions.placeTerrain(activePlayer, data[0].gameid)
   return data[0]
 }
 
-async function createcontestedzone (gameid) {
+async function createContestedZones (gameid) {
   const { data, error } = await supabase
     .from('contested_zone')
     .insert({
@@ -46,8 +45,8 @@ async function createcontestedzone (gameid) {
   return data
 }
 
-async function getdecklist (decklistid) {
-  // console.log('getdecklist run')
+async function getDeckList (decklistid) {
+  // console.log('getDeckList run')
   // console.log(decklistid)
   const { data, error } = await supabase
     .from('deck_list')
@@ -72,8 +71,8 @@ function shuffle (sourceArray) {
   return sourceArray
 }
 
-async function translateDecklisttoCards_in_deck (decklistid, playerid, gameid) {
-  return getdecklist(decklistid).then(decklist => {
+async function deckListToDeck (decklistid, playerid, gameid) {
+  return getDeckList(decklistid).then(decklist => {
     let cards_in_deck = []
     for (i = 0; i < decklist.length; i++) {
       for (j = 0; j < decklist[i].quantity; j++) {
@@ -86,10 +85,10 @@ async function translateDecklisttoCards_in_deck (decklistid, playerid, gameid) {
   })
 }
 
-async function populate_cards_in_deck (decklistid, playerid, gameid) {
-  // console.log('populate_cards_in_deck run')
+async function populateCardsInDeck (decklistid, playerid, gameid) {
+  // console.log('populateCardsInDeck run')
   // console.log(decklistid, playerid, gameid)
-  deck = await translateDecklisttoCards_in_deck(decklistid, playerid, gameid)
+  deck = await deckListToDeck(decklistid, playerid, gameid)
   // console.log(deck)
   const { data, error } = await supabase
     .from('cards_in_deck')
@@ -130,5 +129,5 @@ function randomIntFromInterval (min, max) { // min and max included
 
 module.exports = {
   createGame,
-  populate_cards_in_deck
+  populateCardsInDeck
 }

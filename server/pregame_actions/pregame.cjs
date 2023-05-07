@@ -15,7 +15,7 @@ async function createPlayer (username, id) {
   return data
 }
 
-function getusers (io, socket) {
+function getUsers (io, socket) {
   const users = []
   const clients = io.sockets
   clients.sockets.forEach(function (data, counter) {
@@ -31,5 +31,5 @@ function getusers (io, socket) {
 
 module.exports = {
   createPlayer,
-  getusers
+  getUsers
 }

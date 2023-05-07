@@ -34,7 +34,7 @@ app.get('*', (req, res) => {
   res.end();
 });
 
-//handFunctions.draw(22155493,465).then(data => {console.log(`server ${JSON.stringify(data)} `)})
+
 // event listener for a client to make a connection
 io.on('connection', (socket) => {
 // console.log(`User Connected: ${socket.id}`)
@@ -47,10 +47,10 @@ io.on('connection', (socket) => {
     pregame.createPlayer(socket.username, socket.userID)
   }
   socket.join('general')
-  io.to('general').emit('connected-socket-users', pregame.getusers(io, socket))
+  io.to('general').emit('connected-socket-users', pregame.getUsers(io, socket))
 
   socket.on('list_available_users', function (data, counter) {
-    socket.emit('connected-socket-users', pregame.getusers(io, socket))
+    socket.emit('connected-socket-users', pregame.getUsers(io, socket))
   })
 
   socket.on('create_game', (startPlayerid, joinPlayerid, joinplayersocketID) => {
@@ -69,14 +69,14 @@ io.on('connection', (socket) => {
   })
 
   socket.on('deck_selected', (decklistid, gameid) => {
-    gameCreation.populate_cards_in_deck(decklistid, socket.userID, gameid).then(data => {
+    gameCreation.populateCardsInDeck(decklistid, socket.userID, gameid).then(data => {
       socket.to(gameid).emit('opponent_ready')
     })
   })
 
   socket.on('get_game', async (gameid) => {
     await new Promise(r => {setTimeout(r, 750)});
-    infoFunctions.getfullgame(gameid).then((data) => {
+    infoFunctions.getFullGame(gameid).then((data) => {
       //console.log(`full game success ${(socket.userID)}`)
       socket.to(gameid).emit('game_info', data)
     }).catch((error) => {
@@ -91,8 +91,8 @@ io.on('connection', (socket) => {
     //console.log(`gameid ${gameid}`)
     //console.log(`minionid ${minionid}`)
     //console.log(`zoneid ${zoneid}`)
-    boardFunctions.placeminion(playerid, gameid, minionid, zoneid).then(result => {
-      infoFunctions.getfullgame(gameid).then((data) => {
+    boardFunctions.placeMinion(playerid, gameid, minionid, zoneid).then(result => {
+      infoFunctions.getFullGame(gameid).then((data) => {
       //console.log(`full game success ${(socket.userID)}`)
         io.to(gameid).emit('game_info', data)
       })
@@ -109,8 +109,8 @@ io.on('connection', (socket) => {
     //console.log(`homezone ${homezone}`)
     //console.log(`targetzone ${targetzone}`)
             
-    await boardFunctions.attackzone(attackingplayerid,gameid,attackingminionid,homezone,targetzone)
-    infoFunctions.getfullgame(gameid).then((data) => {
+    await boardFunctions.attackZone(attackingplayerid,gameid,attackingminionid,homezone,targetzone)
+    infoFunctions.getFullGame(gameid).then((data) => {
       //console.log(`full game success ${(socket.userID)}`)
         io.to(gameid).emit('game_info', data)
     })
@@ -122,8 +122,8 @@ io.on('connection', (socket) => {
     //console.log(`gameid ${JSON.stringify(gameid)}`)
     //console.log(`opponentid ${JSON.stringify(opponentid)}`)
     //console.log(`turnplayerid ${JSON.stringify(turnplayerid)}`)
-    await turnFunctions.start_turn(gameid, opponentid)
-    data = await infoFunctions.getfullgame(gameid)
+    await turnFunctions.startTurn(gameid, opponentid)
+    data = await infoFunctions.getFullGame(gameid)
     //console.log(`end_turn game ${JSON.stringify(data)}`)
     io.to(gameid).emit('game_info', data)
     //socket.to(turnplayerid).emit('game_info', data)
@@ -132,7 +132,7 @@ io.on('connection', (socket) => {
 
   
   socket.on('disconnect', () => {
-    io.emit('connected-socket-users', pregame.getusers(io, socket))
+    io.emit('connected-socket-users', pregame.getUsers(io, socket))
   })
 })
 
